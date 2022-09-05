@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Services.AddScoped<IGameRepo, GameRepo>();
+builder.Services.AddScoped<IPlayerRepo, PlayerRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 

@@ -21,6 +21,11 @@ public class PlayerRepo : IPlayerRepo
         return _context.Players.ToList();
     }
 
+    public Player GetPlayerById(int playerId)
+    {
+        return _context.Players.FirstOrDefault(p => p.Id == playerId);
+    }
+
     public IEnumerable<Player> GetPlayersForGame(int gameId)
     {
         return _context.Players.Where(p => p.GameId == gameId);

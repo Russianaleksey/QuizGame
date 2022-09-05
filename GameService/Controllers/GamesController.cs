@@ -13,12 +13,14 @@ public class GamesController : ControllerBase
     private readonly ILogger<GamesController> _logger;
     private readonly IMapper _mapper;
     private readonly IGameRepo _gameRepo;
-
-    public GamesController(ILogger<GamesController> logger, IMapper mapper, IGameRepo gameRepo)
+    private readonly IPlayerRepo _playerRepo;
+    
+    public GamesController(ILogger<GamesController> logger, IMapper mapper, IGameRepo gameRepo, IPlayerRepo playerRepo)
     {
         _logger = logger;
         _mapper = mapper;
         _gameRepo = gameRepo;
+        _playerRepo = playerRepo;
     }
 
     [HttpGet]
@@ -40,7 +42,7 @@ public class GamesController : ControllerBase
             return NotFound();
         }
 
-        var players = _gameRepo.GetPlayersForGame(gameId);
+        var players = _playerRepo.GetPlayersForGame(gameId);
         return Ok(_mapper.Map<IEnumerable<PlayerReadDto>>(players));
     }
 
@@ -77,9 +79,19 @@ public class GamesController : ControllerBase
         }
     }
     
-    [HttpPatch("{gameId}")]
-    public void AddPlayerToGame(int playerId, int gameId)
+    [HttpPatch("{gameId}/players/{playerId}")]
+    public ActionResult AddPlayerToGame(int playerId, int gameId)
     {
-        var player = _gameRepo.
+        try
+        {
+            _playerRepo.AssignPlayerToGame(playerId, gameId);
+            _playerRepo.SaveChanges();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Unable to assign player {playerId} to game {gameId}. Error: {e.Message}");
+            return BadRequest();
+        }
     }
 }

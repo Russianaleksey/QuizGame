@@ -6,6 +6,8 @@ public interface IPlayerRepo
 {
     bool SaveChanges();
 
+    Player GetPlayerById(int id);
+
     IEnumerable<Player> GetAllPlayers();
 
     void CreatePlayer(Player player);
