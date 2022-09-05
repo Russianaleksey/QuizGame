@@ -41,19 +41,4 @@ public class GameRepo : IGameRepo
     {
         return _context.Games.Any(g => g.Id == gameId);
     }
-
-    public IEnumerable<Player> GetPlayersForGame(int gameId)
-    {
-        return _context.Players.Where(p => p.GameId == gameId);
-    }
-
-    public void CreatePlayer(Player player)
-    {
-        if (player == null)
-        {
-            throw new ArgumentNullException(nameof(player));
-        }
-        
-        _context.Players.Add(player);
-    }
 }

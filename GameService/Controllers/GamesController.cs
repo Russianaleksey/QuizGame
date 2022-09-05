@@ -31,6 +31,19 @@ public class GamesController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<GameReadDto>>(games));
     }
 
+    [HttpGet("{gameId}/players")]
+    public ActionResult<IEnumerable<PlayerReadDto>> GetPlayersForGame(int gameId)
+    {
+        var game = _gameRepo.GetGameById(gameId);
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        var players = _gameRepo.GetPlayersForGame(gameId);
+        return Ok(_mapper.Map<IEnumerable<PlayerReadDto>>(players));
+    }
+
     [HttpGet("{gameId}", Name = "GetGameById")]
     public ActionResult<GameReadDto> GetGameById(int gameId)
     {
@@ -62,5 +75,11 @@ public class GamesController : ControllerBase
             _logger.LogError($"Failed to create game. Error: {e.Message}");
             return BadRequest();
         }
+    }
+    
+    [HttpPatch("{gameId}")]
+    public void AddPlayerToGame(int playerId, int gameId)
+    {
+        var player = _gameRepo.
     }
 }

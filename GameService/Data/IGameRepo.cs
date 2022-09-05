@@ -12,9 +12,5 @@ public interface IGameRepo
 
     bool GameExists(int gameId);
 
-    IEnumerable<Player> GetPlayersForGame(int gameId);
-
-    void CreatePlayer(Player player);
-
     public Game GetGameById(int gameId);
 }
