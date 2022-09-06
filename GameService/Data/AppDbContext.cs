@@ -10,4 +10,9 @@ public class AppDbContext : DbContext
     }
     public DbSet<Game> Games { get; set; }
     public DbSet<Player> Players { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
 }
