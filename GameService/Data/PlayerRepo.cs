@@ -23,7 +23,7 @@ public class PlayerRepo : IPlayerRepo
 
     public Player GetPlayerById(int playerId)
     {
-        return _context.Players.FirstOrDefault(p => p.Id == playerId);
+        return _context.Players.FirstOrDefault(p => p.PlayerId == playerId);
     }
 
     public IEnumerable<Player> GetPlayersForGame(int gameId)
@@ -45,13 +45,13 @@ public class PlayerRepo : IPlayerRepo
 
     public bool PlayerExists(int playerId)
     {
-        return _context.Players.Any(p => p.Id == playerId);
+        return _context.Players.Any(p => p.PlayerId == playerId);
     }
 
     public void AssignPlayerToGame(int playerId, int gameId)
     {
-        var player = _context.Players.FirstOrDefault(p => p.Id == playerId);
-        var game = _context.Games.FirstOrDefault(g => g.Id == gameId);
+        var player = _context.Players.FirstOrDefault(p => p.PlayerId == playerId);
+        var game = _context.Games.FirstOrDefault(g => g.GameId == gameId);
         if (player != null && game != null)
         {
             player.Game = game;

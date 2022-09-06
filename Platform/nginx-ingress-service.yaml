@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: punchquiz.com
+      http:
+        paths:
+          - path: /api/games
+            pathType: Prefix
+            backend:
+              service:
+                name: game-clusterip-service
+                port:
+                  number: 80

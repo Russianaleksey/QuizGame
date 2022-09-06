@@ -70,7 +70,7 @@ public class GamesController : ControllerBase
             var gameReadDto = _mapper.Map<GameReadDto>(game);
 
             return CreatedAtRoute(nameof(GetGameById),
-                new { gameId = gameReadDto.Id }, gameReadDto);
+                new { gameId = gameReadDto.GameId }, gameReadDto);
         }
         catch (Exception e)
         {

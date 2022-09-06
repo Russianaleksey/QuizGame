@@ -1,4 +1,5 @@
 using QuizGame.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,12 +14,17 @@ builder.Logging.AddConsole();
 builder.Services.AddScoped<IGameRepo, GameRepo>();
 builder.Services.AddScoped<IPlayerRepo, PlayerRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DbPath")));
+
 var app = builder.Build();
+
 
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+PrepDb.PrepPopulation(app, app.Environment.IsProduction());
 
 app.Run();

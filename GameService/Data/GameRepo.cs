@@ -22,7 +22,7 @@ public class GameRepo : IGameRepo
 
     public Game GetGameById(int gameId)
     {
-        return _context.Games.FirstOrDefault(g => g.Id == gameId);
+        return _context.Games.FirstOrDefault(g => g.GameId == gameId);
     }
 
     public void CreateGame(Game game)
@@ -39,6 +39,6 @@ public class GameRepo : IGameRepo
 
     public bool GameExists(int gameId)
     {
-        return _context.Games.Any(g => g.Id == gameId);
+        return _context.Games.Any(g => g.GameId == gameId);
     }
 }
