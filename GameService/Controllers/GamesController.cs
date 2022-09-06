@@ -100,8 +100,27 @@ public class GamesController : ControllerBase
     [HttpPatch("{gameId}")]
     public ActionResult ChangeGameState(int gameId, [FromBody] GameStateChangeRequest stateChangeRequest)
     {
-         _logger.LogInformation("--> Hit change state method!!!");
-         _logger.LogInformation($"--> State passed is {stateChangeRequest.State}");
-         return Ok();
+        var state = stateChangeRequest.State;
+        
+        var game = _gameRepo.GetGameById(gameId);
+        if (game == null)
+        {
+            return NotFound($"Game with id {gameId} not found.");
+        }
+
+        if (game.State == State.Ended)
+        {
+            return Conflict("Cannot set state on game that has already ended");
+        }
+        
+        if (state == State.NotStarted)
+        {
+            return Conflict("Cannot set state to NotStarted");
+        }
+
+        _gameRepo.SetGameState(game, state);
+        _gameRepo.SaveChanges();
+        
+        return Ok("State successfully updated");
     }
 }
