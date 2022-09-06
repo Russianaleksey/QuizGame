@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizGame.Data;
 using QuizGame.Dtos;
+using QuizGame.Enums;
 using QuizGame.Models;
+using QuizGame.Requests;
 
 namespace QuizGame.Controllers;
 
@@ -93,5 +95,13 @@ public class GamesController : ControllerBase
             _logger.LogError($"Unable to assign player {playerId} to game {gameId}. Error: {e.Message}");
             return BadRequest();
         }
+    }
+
+    [HttpPatch("{gameId}")]
+    public ActionResult ChangeGameState(int gameId, [FromBody] GameStateChangeRequest stateChangeRequest)
+    {
+         _logger.LogInformation("--> Hit change state method!!!");
+         _logger.LogInformation($"--> State passed is {stateChangeRequest.State}");
+         return Ok();
     }
 }

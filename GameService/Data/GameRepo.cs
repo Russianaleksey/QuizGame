@@ -1,4 +1,5 @@
-﻿using QuizGame.Models;
+﻿using QuizGame.Enums;
+using QuizGame.Models;
 
 namespace QuizGame.Data;
 
@@ -40,5 +41,10 @@ public class GameRepo : IGameRepo
     public bool GameExists(int gameId)
     {
         return _context.Games.Any(g => g.GameId == gameId);
+    }
+
+    public void SetGameState(Game game, State gameState)
+    {
+        game.State = gameState;
     }
 }

@@ -1,4 +1,6 @@
-﻿using QuizGame.Models;
+﻿using System.Data;
+using QuizGame.Enums;
+using QuizGame.Models;
 
 namespace QuizGame.Data;
 
@@ -52,14 +54,19 @@ public class PlayerRepo : IPlayerRepo
     {
         var player = _context.Players.FirstOrDefault(p => p.PlayerId == playerId);
         var game = _context.Games.FirstOrDefault(g => g.GameId == gameId);
-        if (player != null && game != null)
+        if (player == null || game == null)
         {
-            player.Game = game;
-            
+            throw new ArgumentNullException();
+        }
+
+        if (game.State != State.NotStarted)
+        {
+            throw new ConstraintException($"Adding player {playerId} to game {gameId} failed. Game already started or ended.");
         }
         else
         {
-            throw new ArgumentNullException();
+            player.GameId = gameId;
+            _context.SaveChanges();
         }
     }
 }

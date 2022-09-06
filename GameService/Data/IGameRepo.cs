@@ -1,4 +1,5 @@
-﻿using QuizGame.Models;
+﻿using QuizGame.Enums;
+using QuizGame.Models;
 
 namespace QuizGame.Data;
 
@@ -13,4 +14,6 @@ public interface IGameRepo
     bool GameExists(int gameId);
 
     public Game GetGameById(int gameId);
+
+    public void SetGameState(Game game, State gameState);
 }
