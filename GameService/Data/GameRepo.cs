@@ -1,4 +1,5 @@
-﻿using QuizGame.Enums;
+﻿using QuizGame.Data.Interfaces;
+using QuizGame.Enums;
 using QuizGame.Models;
 
 namespace QuizGame.Data;

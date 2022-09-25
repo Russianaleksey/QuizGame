@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using QuizGame.Enums;
 
 namespace QuizGame.Models;
@@ -16,4 +15,6 @@ public class Game
     public State State { get; set; } = State.NotStarted;
     
     public ICollection<Player> Players { get; set; } = new List<Player>();
+
+    public Board? Board { get; set; } 
 }

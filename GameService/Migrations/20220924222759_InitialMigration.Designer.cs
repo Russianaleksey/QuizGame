@@ -12,8 +12,8 @@ using QuizGame.Data;
 namespace QuizGame.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220906042409_AddStateEnum")]
-    partial class AddStateEnum
+    [Migration("20220924222759_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,37 @@ namespace QuizGame.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("QuizGame.Models.Board", b =>
+                {
+                    b.Property<int>("BoardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BoardId"));
+
+                    b.Property<int>("BoardSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FriendlyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Spaces")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BoardId");
+
+                    b.HasIndex("GameId")
+                        .IsUnique()
+                        .HasFilter("[GameId] IS NOT NULL");
+
+                    b.ToTable("Boards");
+                });
 
             modelBuilder.Entity("QuizGame.Models.Game", b =>
                 {
@@ -60,11 +91,23 @@ namespace QuizGame.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Space")
+                        .HasColumnType("int");
+
                     b.HasKey("PlayerId");
 
                     b.HasIndex("GameId");
 
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("QuizGame.Models.Board", b =>
+                {
+                    b.HasOne("QuizGame.Models.Game", "Game")
+                        .WithOne("Board")
+                        .HasForeignKey("QuizGame.Models.Board", "GameId");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("QuizGame.Models.Player", b =>
@@ -78,6 +121,8 @@ namespace QuizGame.Migrations
 
             modelBuilder.Entity("QuizGame.Models.Game", b =>
                 {
+                    b.Navigation("Board");
+
                     b.Navigation("Players");
                 });
 #pragma warning restore 612, 618

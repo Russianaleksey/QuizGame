@@ -10,7 +10,7 @@ public class Player
     
     [Required]
     public string Name { get; set; }
-    
+    public int Space { get; set; } = 0;
     public int? GameId { get; set; }
     
     public Game? Game { get; set; }

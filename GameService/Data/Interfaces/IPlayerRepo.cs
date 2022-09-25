@@ -1,6 +1,6 @@
 ﻿using QuizGame.Models;
 
-namespace QuizGame.Data;
+namespace QuizGame.Data.Interfaces;
 
 public interface IPlayerRepo
 {
@@ -16,5 +16,7 @@ public interface IPlayerRepo
 
     IEnumerable<Player> GetPlayersForGame(int gameId);
 
-    void AssignPlayerToGame(int playerId, int gameId);
+    void AssignPlayerToGame(Player player, Game game);
+
+    void AssignPlayerToSpace(Player player, int space);
 }

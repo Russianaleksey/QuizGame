@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using QuizGame.Data.Interfaces;
 using QuizGame.Enums;
 using QuizGame.Models;
 
@@ -50,10 +51,8 @@ public class PlayerRepo : IPlayerRepo
         return _context.Players.Any(p => p.PlayerId == playerId);
     }
 
-    public void AssignPlayerToGame(int playerId, int gameId)
+    public void AssignPlayerToGame(Player player, Game game)
     {
-        var player = _context.Players.FirstOrDefault(p => p.PlayerId == playerId);
-        var game = _context.Games.FirstOrDefault(g => g.GameId == gameId);
         if (player == null || game == null)
         {
             throw new ArgumentNullException();
@@ -61,12 +60,16 @@ public class PlayerRepo : IPlayerRepo
 
         if (game.State != State.NotStarted)
         {
-            throw new ConstraintException($"Adding player {playerId} to game {gameId} failed. Game already started or ended.");
+            throw new ConstraintException($"Adding player {player.PlayerId} to game {game.GameId} failed. Game already started or ended.");
         }
         else
         {
-            player.GameId = gameId;
-            _context.SaveChanges();
+            player.GameId = game.GameId;
         }
+    }
+
+    public void AssignPlayerToSpace(Player player, int space)
+    {
+        player.Space = space;
     }
 }

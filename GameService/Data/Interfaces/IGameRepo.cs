@@ -1,7 +1,7 @@
 ﻿using QuizGame.Enums;
 using QuizGame.Models;
 
-namespace QuizGame.Data;
+namespace QuizGame.Data.Interfaces;
 
 public interface IGameRepo
 {

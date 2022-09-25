@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using QuizGame.Data;
+using QuizGame.Data.Interfaces;
 using QuizGame.Dtos;
 using QuizGame.Models;
+using QuizGame.Requests;
 
 namespace QuizGame.Controllers;
 
@@ -58,8 +60,32 @@ public class PlayersController : ControllerBase
         }
         catch (Exception e)
         {   
-            _logger.LogError($"Unable to create player.");
+            _logger.LogError($"Unable to create player.\n{e.Message}");
             return BadRequest();
         }
     }
+
+    [HttpPatch("{playerId}", Name = "AssignPlayerToSpace")]
+    public ActionResult AssignPlayerToSpace(int playerId, [FromBody] PlayerSpaceChangeRequest spaceChangeRequest)
+    {
+        try
+        {
+            var player = _playerRepo.GetPlayerById(playerId);
+            
+            if (player == null)
+            {
+                return BadRequest($"Unable to find player with Id {playerId}");
+            }
+            
+            _playerRepo.AssignPlayerToSpace(player, spaceChangeRequest.Space);
+            _playerRepo.SaveChanges();
+            return Ok($"Assigned playerId {playerId} to space {spaceChangeRequest.Space}");
+        }
+        catch (Exception e)
+        {
+            string errorLog = $"Unable to assign playerId: ${playerId} to space: {spaceChangeRequest.Space}";
+            return BadRequest(errorLog);
+        }
+    }
+    
 }

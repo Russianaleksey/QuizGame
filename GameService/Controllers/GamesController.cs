@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Text.Json.Serialization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using QuizGame.Data;
+using QuizGame.Data.Interfaces;
 using QuizGame.Dtos;
 using QuizGame.Enums;
 using QuizGame.Models;
@@ -86,14 +88,37 @@ public class GamesController : ControllerBase
     {
         try
         {
-            _playerRepo.AssignPlayerToGame(playerId, gameId);
+            var game = _gameRepo.GetGameById(gameId);
+            var player = _playerRepo.GetPlayerById(playerId);
+
+            if (game == null)
+            {
+                return BadRequest($"Unable to find game with gameId {gameId}");
+            }
+
+            if (player == null)
+            {
+                return BadRequest($"Unable to find player with playerId {playerId}");
+            }
+            
+            _playerRepo.AssignPlayerToGame(player, game);
+            _playerRepo.AssignPlayerToSpace(player, 0);
             _playerRepo.SaveChanges();
-            return Ok();
+
+            var log = new
+            {
+                Name = player.Name,
+                Id = player.PlayerId,
+                DestinationGame = game.GameId
+            };
+            
+            return Ok(log);
         }
         catch (Exception e)
         {
-            _logger.LogError($"Unable to assign player {playerId} to game {gameId}. Error: {e.Message}");
-            return BadRequest();
+            string errorLog = $"Unable to assign player {playerId} to game {gameId}. Error: {e.Message}";
+            _logger.LogError(errorLog);
+            return BadRequest(errorLog);
         }
     }
 
