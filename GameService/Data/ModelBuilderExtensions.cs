@@ -29,6 +29,51 @@ public static class ModelBuilderExtensions
             new Player {PlayerId = 4, Name = "Adrian", GameId = 1},
             new Player {PlayerId = 5, Name = "Felix", GameId = 1}
         );
+
+        modelBuilder.Entity<Question>().HasData(
+            new Question
+            {
+                QuestionId = 1, 
+                Type = QuestionType.ComputerScience, 
+                ProblemStatement = "What\'s the name of the machine used by the allies in WW2 to crack Germany's codes?",
+                Answer = "Enigma"
+            },
+            new Question
+            {
+                QuestionId = 2, 
+                Type = QuestionType.ComputerScience, 
+                ProblemStatement = "Who is the father of computer science?",
+                Answer = "Alan Turing"
+            },
+            new Question
+            {
+                QuestionId = 3, 
+                Type = QuestionType.ComputerScience, 
+                ProblemStatement = "What was the first computer system that used color display?",
+                Answer = "Apple 1"
+            },
+            new Question
+            {
+                QuestionId = 4, 
+                Type = QuestionType.ComputerScience, 
+                ProblemStatement = "What was the name of the first computer programmer?",
+                Answer = "Ada Lovelace"
+            },
+            new Question
+            {
+                QuestionId = 5, 
+                Type = QuestionType.ComputerScience, 
+                ProblemStatement = "Which popular company designed the first CPU?",
+                Answer = "Intel"
+            },
+            new Question
+            {
+                QuestionId = 6, 
+                Type = QuestionType.ComputerScience, 
+                ProblemStatement = "Which is the single most popular computer system ever sold?",
+                Answer = "Commodore 64"
+            }
+        );
     }
     
 }

@@ -1,6 +1,7 @@
 using QuizGame.Data;
 using Microsoft.EntityFrameworkCore;
 using QuizGame.Data.Interfaces;
+using QuizGame.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Logging.AddConsole();
 builder.Services.AddScoped<IGameRepo, GameRepo>();
 builder.Services.AddScoped<IPlayerRepo, PlayerRepo>();
 builder.Services.AddScoped<IBoardRepo, BoardRepo>();
+builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
+builder.Services.AddScoped<IRandomNumberGenerator, RandomNumberGenerator>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DbPath")));
 

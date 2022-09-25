@@ -13,5 +13,6 @@ public class GameProfile : Profile
         CreateMap<Player, PlayerReadDto>();
         CreateMap<PlayerCreateDto, Player>();
         CreateMap<Board, BoardReadDto>();
+        CreateMap<Question, QuestionReadDto>();
     }
 }
